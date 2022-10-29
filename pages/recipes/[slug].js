@@ -1,4 +1,5 @@
 import { createClient } from 'contentful';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import RecipeCard from '../../components/RecipeCard';
 
 const { CONTENTFUL_ACCESS_TOKEN, CONTENTFUL_SPACE_ID } = process.env;
@@ -34,6 +35,7 @@ export default function RecipeDetails({ recipe }) {
   return (
     <div>
         <RecipeCard recipe={recipe} />
+        <div>{documentToReactComponents(recipe.fields.content)}</div>
     </div>
   )
 }
