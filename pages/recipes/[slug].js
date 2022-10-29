@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 
   return {
     paths: res.items.map(({ fields: { slug }}) => ({ params: { slug } })),
-    fallback: false,
+    fallback: true,
   }
 }
 
@@ -23,6 +23,15 @@ export async function getStaticProps({ params }) {
     content_type: 'post', 
     'fields.slug': params.slug 
   });
+
+  if (!items.length) {
+    return {
+      redirect: {
+        destingation : '/',
+        permanent: false,
+      }
+    }
+  }
 
   return {
     props: {
@@ -33,6 +42,10 @@ export async function getStaticProps({ params }) {
 }
 
 export default function RecipeDetails({ recipe }) {
+  if (!recipe) {
+    return (<div>Loading</div>);
+  }
+
   return (
     <div>
         <RecipeCard recipe={recipe} />
